@@ -1,29 +1,20 @@
-require("dotenv").config();
-const express = require("express");
-const app = express();
-const { PORT = 3000 } = process.env;
-const endpointV1 = require("./router/endpointV1");
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
 
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+
+var app = express();
+
+app.use(logger('dev'));
 app.use(express.json());
-app.use('/api/v1', endpointV1);
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-// 404 error handling
-app.use((req, res, next) => {
-  res.status(404).json({
-    status: false,
-    message: "Not Found!",
-    data: null,
-  });
-});
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
-//500 error handling
-app.use((req, res, next) => {
-  console.log(err);
-  res.status(500).json({
-    status: false,
-    message: "Internal Server Error!",
-    data: err.message
-  });
-});
-
-app.listen(PORT, () => console.log("Listening on port", PORT));
+module.exports = app;

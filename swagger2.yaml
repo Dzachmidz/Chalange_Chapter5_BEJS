@@ -1,0 +1,362 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Banking System
+  description: Banking System adalah jaringan lembaga keuangan yang mengelola uang, menyediakan layanan keuangan, dan memfasilitasi peredaran dana. Ini melibatkan lembaga seperti bank, kredit union, dan lembaga keuangan lainnya, yang menerima simpanan, memberikan pinjaman, menyediakan layanan keuangan, dan mengatur pembayaran. Bank sentral dan regulasi pemerintah memainkan peran penting dalam menjaga stabilitas sistem perbankan.
+servers:
+- url: http://localhost:3000/api/v1
+paths:
+  /users:
+    post:
+      tags:
+        - User
+      summary: Membuat Pengguna Baru
+      requestBody:
+        description: Data pengguna baru
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                profile:
+                  type: object
+                  properties:
+                    identifyType:
+                      type: string
+                    identifyNumber:
+                      type: string
+                    address:
+                      type: string
+                BankAccount:
+                  type: object
+                  properties:
+                    userId:
+                      type: integer
+                    identifyType:
+                      type: string
+                    identifyNumber:
+                      type: number
+                    address:
+                      type: string
+      responses:
+        '201':
+          description: Berhasil menambahkan user baru
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "User Created Successfully!"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      email:
+                        type: string
+                      password:
+                        type: string
+                      profile:
+                        $ref: "#/components/schemas/PostProfileOutput"
+                      BankAccount:
+                        $ref: "#/components/schemas/BankAccountInput"
+    get:
+      tags:
+        - User
+      summary: Mendapatkan Daftar Pengguna
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetUserListOutput"
+  /users/{userId}:
+    get:
+      tags:
+        - User
+      summary: Mendapatkan Pengguna Berdasarkan ID
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostUserOutput"
+  /accounts:
+    post:
+      tags:
+        - Account
+      summary: Membuat Akun Baru
+      requestBody:
+        description: Data akun baru
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                bankName:
+                  type: string
+                bankAccountNumber:
+                  type: string
+                balance:
+                  type: number
+      responses:
+        '201':
+          description: Berhasil menambahkan akun baru
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostAccountOutput"
+    get:
+      tags:
+        - Account
+      summary: Mendapatkan Daftar Akun
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAccountListOutput"
+  /accounts/{accountId}:
+    get:
+      tags:
+        - Account
+      summary: Mendapatkan Akun Berdasarkan ID
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostAccountOutput"
+  /transactions:
+    post:
+      tags:
+        - Transaksi
+      summary: Melakukan Transaksi
+      requestBody:
+        description: Data transaksi
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                sourceAccountId:
+                  type: integer
+                destinasiAccountId:
+                  type: integer
+                amount:
+                  type: number
+      responses:
+        '201':
+          description: Successfully created new account
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostTransactionOutput"
+    get:
+      tags:
+        - Transaksi
+      summary: Mendapatkan Daftar Transaksi
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetTransactionListOutput"
+  /transactions/{transactionId}:
+    get:
+      tags:
+        - Transaksi
+      summary: Mendapatkan Transaksi Berdasarkan ID
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Berhasil melakukan transaksi
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PostTransactionOutput"
+components:
+  schemas:
+    ProfileInput:
+      type: object
+      properties:
+        identifyType:
+          type: string
+        identifyNumber:
+          type: string
+        address:
+          type: string
+    BankAccountInput:
+      type: object
+      properties:
+        userId:
+          type: integer
+        identifyType:
+          type: string
+        identifyNumber:
+          type: number
+        address:
+          type: string
+    UserInput:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        profile:
+          $ref: "#/components/schemas/ProfileInput"
+        BankAccount:
+          $ref: "#/components/schemas/BankAccountInput"
+    PostProfileOutput:
+      type: object
+      properties:
+        identifyType:
+          type: string
+        identifyNumber:
+          type: string
+        address:
+          type: string
+    PostAccountOutput:
+      type: object
+      properties:
+        userId:
+          type: integer
+          example: 1
+        bankName:
+          type: string
+          example: "BCA"
+        bankAccountNumber:
+          type: string
+          example: "123456789"
+        balance:
+          type: number
+          example: 1000000
+    PostUserOutput:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Achmad Fahmi Al Hafidz"
+        email:
+          type: string
+          example: "fahmialhafidza@gmail.com"
+        password:
+          type: string
+          example: "123456789"
+        profile:
+          $ref: "#/components/schemas/PostProfileOutput"
+        BankAccount:
+          $ref: "#/components/schemas/BankAccountInput"
+    PostTransactionOutput:
+      type: object
+      properties:
+        sourceAccountId:
+          type: integer
+          example: 1
+        destinasiAccountId:
+          type: integer
+          example: 2
+        amount:
+          type: number
+          example: 1000
+    GetUserListOutput:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "success"
+        data:
+          type: object
+          properties:
+            pagination:
+              $ref: "#/components/schemas/Pagination"
+    GetAccountListOutput:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "success"
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostAccountOutput"
+    GetTransactionListOutput:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "success"
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/PostTransactionOutput"
+    Pagination:
+      type: object
+      properties:
+        links:
+          type: object
+          properties:
+            next:
+              type: string
+              example: "https://domain.com/users?page=3&limit=10"
+            prev:
+              type: string
+              example: "https://domain.com/users?page=1&limit=10"
+        total_items:
+          type: integer
+          example: 100

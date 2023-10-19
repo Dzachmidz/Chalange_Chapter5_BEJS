@@ -1,18 +1,24 @@
 require("dotenv").config();
-var express = require('express');
-var logger = require('morgan');
-var app = express();
+const express = require("express");
+const app = express();
 // const { PORT = 3000 } = process.env;
 const endpointV1 = require("./routes/endpointV1");
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yaml");
+const morgan = require("morgan");
+
+const fs = require("fs");
+const file = fs.readFileSync("./apiadeng.yaml", "utf8"); 
+const swaggerDocument = YAML.parse(file);
+const authRouter = require("./routes/auth.routes");
 
 
-app.use(logger('dev'));
+
 app.use(express.json());
-
-app.use('/api/v1', endpointV1);
-// app.use('/api/v1/users', require('./routes/users.routes'));
-// app.use('/api/v1/accounts', require('./routes/accounts.routes'));
-// app.use('/api/v1/transactions', require('./routes/transactions.routes'));
+app.use(morgan("dev"));
+app.use("/api/v1", endpointV1);
+app.use("/api/v1/auth", authRouter);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 
 

@@ -87,7 +87,7 @@ describe("test GET /api/v1/accounts/{id} endpoint", () => {
           `/api/v1/accounts/${account.id + 1000}`
         );
 
-        expect(statusCode).toBe(500);
+        expect(statusCode).toBe(400);
         expect(body).toHaveProperty("status");
         expect(body).toHaveProperty("message");
       } catch (err) {

@@ -28,4 +28,4 @@ transaction
     -> Berhasil: Menampilkan semua data transaksi.
 - Get Transaction by ID:
     -> Berhasil: Test mencari transaksi dengan ID yang terdaftar.
-    -> Gagal: Test mencari transaksi dengan ID yang tidak terdaftar.
+    -> Error: Test mencari transaksi dengan ID yang tidak terdaftar.

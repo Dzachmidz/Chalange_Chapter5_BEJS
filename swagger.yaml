@@ -1,4 +1,4 @@
-swagger: "2.0"
+swagger: 2.0
 info:
   version: 1.0.0
   title: Banking System
@@ -317,4 +317,3 @@ definitions:
         type: array
         items:
           $ref: "#/definitions/PostUserOutput"
-        

@@ -54,3 +54,35 @@ GET http://localhost:3000/api/v1/transactions
 
 ### GET DETAIL TRANSACTION
 GET http://localhost:3000/api/v1/transactions/1
+
+
+#################### AUTH ####################
+### REGISTER
+POST http://localhost:3000/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "name": "fahmi20",
+  "email": "fahmi20@mail.com",
+  "password": "fahmi12345",
+  "password_confirmation":"fahmi12345",
+  "profile": {
+    "identifyType": "KTP",
+    "identifyNumber": "1234567890",
+    "address": "Sidoarjo"
+  }
+}
+
+
+### LOGIN
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email":"fahmi20@mail.com",
+    "password":"fahmi12345"
+}
+
+### GET TOKEN
+GET http://localhost:3000/api/v1/auth/whoami
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImlhdCI6MTY5NzczOTc2OX0.5X53OtNuVBiWwg3nZ3JPBfeodJ6Sb9Igg38EjrSKDtA

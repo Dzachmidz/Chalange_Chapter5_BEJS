@@ -1,0 +1,363 @@
+openapi: 3.0.3
+info:
+  title: Binar News
+  description: |-
+    Aplikasi ini akan berguna untuk membantu students mendapatkan informasi terbaru tentang kelas yang ada di Binar Academy.
+  contact:
+    email: alex@mail.com
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api/v1
+  - url: https://test.binarnews.com/api/v1
+  - url: https://binarnews.com/api/v1
+tags:
+  - name: user
+    description: Everything about your Users
+  - name: post
+    description: Access to Petstore Posts
+paths:
+  /users:
+    post:
+      tags:
+        - user
+      operationId: post-create-new-user
+      summary: ini summary
+      description: ini description
+      requestBody:
+        $ref: '#/components/requestBodies/CreateUser'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BasicResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserModel'
+
+        '400':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BadRequestResponse'
+    get:
+      tags:
+        - user
+      operationId: get-fetch-all-user
+      summary: ini summary
+      description: ini description
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: false
+          description: 'page of content'
+        - in: query
+          name: limit
+          schema:
+            type: integer
+          required: false
+          description: 'limit content per page'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BasicResponse'
+                  - type: object
+                    properties:
+                      pagination:
+                        $ref: '#/components/schemas/Pagination'
+                      users:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/UserModel'
+  '/users/{userId}':
+    get:
+      tags:
+        - user
+      operationId: get-fetch-user-detail
+      summary: ini summary
+      description: ini description
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: 'userId wajib diisi'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BasicResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserModel'
+    put:
+      tags:
+        - user
+      operationId: update-user-detail
+      summary: ini summary
+      description: ini description
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: 'userId wajib diisi'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/UserModel'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BasicResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserModel'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/NotFoundResponse'
+    delete:
+      tags:
+        - user
+      operationId: update-user-detail
+      summary: ini summary
+      description: ini description
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: integer
+          required: true
+          description: 'userId wajib diisi'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BasicResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/UserModel'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/NotFoundResponse'
+  /posts:
+    post:
+      tags:
+        - post
+      operationId: post-create-new-post
+      summary: ini summary
+      description: ini description
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/PostModel'
+      responses:
+        '201':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BasicResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PostModel'
+    get:
+      tags:
+        - post
+      operationId: get-posts
+      summary: ini summary
+      description: ini description
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BasicResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/PostModel'
+
+  '/posts/{postId}':
+    get:
+      tags:
+        - post
+      operationId: get-detail-post
+      summary: ini summary
+      description: ini description
+      parameters:
+        - in: path
+          name: postId
+          schema:
+            type: integer
+          required: true
+          description: 'postId wajib diisi'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/BasicResponse'
+                  - type: object
+                    properties:
+                      data:
+                        $ref: '#/components/schemas/PostModel'
+        '404':
+          description: Failed operation
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/NotFoundResponse'
+components:
+  schemas:
+    BasicResponse:
+      title: BasicResponse
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: 'OK'
+    NotFoundResponse:
+      title: NotFoundResponse
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: 'Not Found'
+        data:
+          example: null
+    BadRequestResponse:
+      title: BadRequestResponse
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: 'Bad Request'
+        data:
+          type: object
+          example: null
+
+    UserModel:
+      title: UserModel
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 'bujang'
+        email:
+          type: string
+          example: 'bujang@mail.com'
+    PostModel:
+      title: PostModel
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        categories:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              name:
+                type: string
+                example:
+                  - { 'id': 1, 'name': 'express' }
+                  - { 'id': 2, 'name': 'api' }
+                  - { 'id': 3, 'name': 'backend' }
+        authorId:
+          type: integer
+          example: 1
+
+    Pagination:
+      title: Pagination
+      type: object
+      properties:
+        links:
+          type: object
+          properties:
+            next:
+              type: string
+              example: 'https://domain.com/users?page=3&limit=10'
+            prev:
+              type: string
+              example: 'https://domain.com/users?page=1&limit=10'
+        total_items:
+          type: integer
+          example: 100
+
+  requestBodies:
+    CreateUser:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: 'bujang'
+              email:
+                type: string
+                example: 'bujang@mail.com'

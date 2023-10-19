@@ -1,0 +1,320 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: Banking System
+  description: |-
+   Banking System adalah jaringan lembaga keuangan yang mengelola uang, menyediakan layanan keuangan, dan memfasilitasi peredaran dana. Ini melibatkan lembaga seperti bank, kredit union, dan lembaga keuangan lainnya, yang menerima simpanan, memberikan pinjaman, menyediakan layanan keuangan, dan mengatur pembayaran. Bank sentral dan regulasi pemerintah memainkan peran penting dalam menjaga stabilitas sistem perbankan.
+  contact:
+    email: fahmialhafidza@gmail.com
+paths:
+  /api/v1/users:
+    post:
+      tags:
+        - User
+      summary: Membuat Pengguna Baru
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: Data pengguna baru
+          required: true
+          schema:
+            $ref: "#/definitions/UserInput"
+      responses:
+        201:
+          description: Berhasil menambahkan user baru
+          schema:
+            $ref: "#/definitions/PostUserOutput"
+    get:
+      tags:
+        - User
+      summary: Mendapatkan Daftar Pengguna
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: Data pengguna baru
+          required: true
+          schema:
+            $ref: "#/definitions/UserInput"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/GetUserListOutput"
+  /api/v1/users/{userId}:
+    get:
+      tags:
+        - User
+      summary: Mendapatkan Pengguna Berdasarkan ID
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/PostUserOutput"
+  /api/v1/accounts:
+    post:
+      tags:
+        - Account
+      summary: Membuat Akun Baru
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: account
+          description: Data akun baru
+          required: true
+          schema:
+            $ref: "#/definitions/AccountInput"
+      responses:
+        201:
+          description: Berhasil menambahkan akun baru
+          schema:
+            $ref: "#/definitions/PostAccountOutput"
+    get:
+      tags:
+        - Account
+      summary: Mendapatkan Daftar Akun
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/GetAccountListOutput"
+  /api/v1/accounts/{accountId}:
+    get:
+      tags:
+        - Account
+      summary: Mendapatkan Akun Berdasarkan ID
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/PostAccountOutput"
+  /api/v1/transactions:
+    post:
+      tags:
+        - Transaksi
+      summary: Melakukan Transaksi
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: transaction
+          description: Data transaksi
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionInput"
+      responses:
+        201:
+          description: Successfully created new account
+          schema:
+            $ref: "#/definitions/PostTransactionOutput"
+    get:
+      tags:
+        - Transaksi
+      summary: Mendapatkan Daftar Transaksi
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/GetTransactionListOutput"
+  /api/v1/transactions/{transactionId}:
+    get:
+      tags:
+        - Transaksi
+      summary: Mendapatkan Transaksi Berdasarkan ID
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Berhasil melakukan transaksi
+          schema:
+            $ref: "#/definitions/PostTransactionOutput"
+definitions:
+  UserInput:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      profile:
+        $ref: "#/definitions/ProfileInput"
+      BankAccount:
+       $ref: "#/definitions/BankAccountInput"
+  ProfileInput:
+    type: object
+    properties:
+      identifyType:
+        type: string
+      identifyNumber:
+        type: string
+      address:
+        type: string
+  BankAccountInput:
+    type: object
+    properties:
+      userId:
+        type: number
+      identifyType:
+        type: string
+      identifyNumber:
+        type: number
+      address:
+        type: string
+  AccountInput:
+    type: object
+    properties:
+      userId:
+        type: integer
+      bankName:
+        type: string
+      bankAccountNumber:
+        type: string
+      balance:
+        type: number
+  TransactionInput:
+    type: object
+    properties:
+      sourceAccountId:
+        type: integer
+      destinasiAccountId:
+        type: integer
+      amount:
+        type: number
+  PostUserOutput:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: "Achmad Fahmi Al Hafidz"
+      email:
+        type: string
+        example: "fahmialhafidza@gmail.com"
+      password:
+        type: string
+        example: "123456789"
+      profile:
+        $ref: "#/definitions/PostProfileOutput"
+      BankAccount:
+       $ref: "#/definitions/BankAccountInput"
+  PostAccountOutput:
+    type: object
+    properties:
+      userId:
+        type: integer
+        example: 1
+      bankName:
+        type: string
+        example: "BCA"
+      bankAccountNumber:
+        type: string
+        example: "123456789"
+      balance:
+        type: number
+        example: 1000000
+  PostTransactionOutput:
+    type: object
+    properties:
+      sourceAccountId:
+        type: integer
+        example: 1
+      destinasiAccountId:
+        type: integer
+        example: 2
+      amount:
+        type: number
+        example: 1000
+  PostProfileOutput:
+    type: object
+    properties:
+      identifyType:
+        type: string
+        example: "KTP"
+      identifyNumber:
+        type: string
+        example: "123456789"
+      address:
+        type: string
+        example: "Sidoarjo"
+  GetUserListOutput:
+    type: object
+    properties:
+      status:
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "success"
+      data:
+        type: object
+        properties: 
+          pagination:
+            $ref: "#/definitions/Pagination"
+  GetAccountListOutput:
+    type: object
+    properties:
+      status:
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "success"
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/PostAccountOutput"
+  GetTransactionListOutput:
+    type: object
+    properties:
+      status:
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "success"
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/PostTransactionOutput"
+  Pagination:
+    title: Pagination
+    type: object
+    properties:
+      links:
+        type: object
+        properties:
+          next:
+            type: string
+            example: "https://domain.com/users?page=3&limit=10"
+          prev:
+            type: string
+            example: "https://domain.com/users?page=1&limit=10"
+      total_items:
+        type: integer
+        example: 100
+      user:
+        type: array
+        items:
+          $ref: "#/definitions/PostUserOutput"
+        

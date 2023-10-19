@@ -1,0 +1,439 @@
+swagger: "2.0"
+info:
+  version: 1.0.0
+  title: BanKSystem
+  description: |-
+    BanKSystem adalah inovasi revolusioner dalam dunia perbankan. Dengan aplikasi ini, Anda akan merasakan kebebasan finansial dan kemudahan dalam mengelola keuangan Anda. Nikmati layanan perbankan modern yang memungkinkan Anda untuk melakukan transaksi, mengelola akun, dan merencanakan masa depan keuangan Anda, semua dalam genggaman tangan Anda. Dengan antarmuka yang elegan dan fitur-fitur canggih, BanKSystem membantu Anda mengoptimalkan pengelolaandana Anda, berinvestasi secara cerdas, dan mencapai tujuan keuangan Anda. Jadikan setiap transaksi dan keputusan keuangan sebagai langkah menuju kebebasan finansial yang Anda impikan. Bergabunglah dengan BanKSystem dan temukan dunia baru di mana finansial tidak pernah lebih sederhana dan lebih kuat. Raih kontrol penuh atas keuangan Anda dan buat masa depan keuangan yang cerah.
+  contact:
+    email: muhammadalimran22@gmail.com
+paths:
+  /api/v1/users:
+    post:
+      tags:
+        - User
+      summary: Membuat Pengguna Baru
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: Data pengguna baru
+          required: true
+          schema:
+            $ref: "#/definitions/UserInput"
+      responses:
+        201:
+          description: Successful user creation
+          schema:
+            $ref: "#/definitions/PostUserOutput"
+    get:
+      tags:
+        - User
+      summary: Mendapatkan Daftar Pengguna
+      responses:
+        200:
+          description: Sukses
+          schema:
+            $ref: "#/definitions/GetUserListOutput"
+  /api/v1/users/{userId}:
+    get:
+      tags:
+        - User
+      summary: Mendapatkan Pengguna Berdasarkan ID
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Sukses
+          schema:
+            $ref: "#/definitions/PostUserOutput"
+    put:
+      tags:
+        - User
+      summary: Memperbarui Pengguna Berdasarkan ID
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: integer
+        - in: body
+          name: user
+          description: Data pengguna yang diperbarui
+          required: true
+          schema:
+            $ref: "#/definitions/PostUserOutput"
+      responses:
+        200:
+          description: Sukses
+          schema:
+            $ref: "#/definitions/PutUserOutput"
+    delete:
+      tags:
+        - User
+      summary: Menghapus Pengguna Berdasarkan ID
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Sukses
+          schema:
+            $ref: "#/definitions/DeleteUserOutput"
+  /api/v1/pagination-user:
+    get:
+      tags:
+        - User
+      summary: Mendapatkan Daftar Pengguna dengan Paginasi
+      parameters:
+        - name: limit
+          in: query
+          required: true
+          type: integer
+        - name: page
+          in: query
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Sukses
+          schema:
+            $ref: "#/definitions/Pagination"
+  /api/v1/accounts:
+    post:
+      tags:
+        - Account
+      summary: Membuat Akun Baru
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: account
+          description: Data akun baru
+          required: true
+          schema:
+            $ref: "#/definitions/AccountInput"
+      responses:
+        201:
+          description: Successful account creation
+          schema:
+            $ref: "#/definitions/PostAccountOutput"
+    get:
+      tags:
+        - Account
+      summary: Mendapatkan Daftar Akun
+      responses:
+        200:
+          description: Sukses
+          schema:
+            $ref: "#/definitions/GetAccountListOutput"
+  /api/v1/accounts/{accountId}:
+    get:
+      tags:
+        - Account
+      summary: Mendapatkan Akun Berdasarkan ID
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Sukses
+          schema:
+            $ref: "#/definitions/PostAccountOutput"
+    put:
+      tags:
+        - Account
+      summary: Memperbarui Akun Berdasarkan ID
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          type: integer
+        - in: body
+          name: account
+          description: Data akun yang diperbarui
+          required: true
+          schema:
+            $ref: "#/definitions/PostAccountOutput"
+      responses:
+        200:
+          description: Sukses
+          schema:
+            $ref: "#/definitions/PutAccountOutput" # Menggunakan definisi output yang berbeda dari operasi POST
+    delete:
+      tags:
+        - Account
+      summary: Menghapus Akun Berdasarkan ID
+      parameters:
+        - name: accountId
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Sukses
+          schema:
+            $ref: "#/definitions/DeletePostAccountOutput"
+  /api/v1/transactions:
+    post:
+      tags:
+        - Transaksi
+      summary: Melakukan Transaksi
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: transaction
+          description: Data transaksi
+          required: true
+          schema:
+            $ref: "#/definitions/TransactionInput"
+      responses:
+        201:
+          description: Successful transaction
+          schema:
+            $ref: "#/definitions/PostTransactionOutput"
+    get:
+      tags:
+        - Transaksi
+      summary: Mendapatkan Daftar Transaksi
+      responses:
+        200:
+          description: Sukses
+          schema:
+            $ref: "#/definitions/GetTransactionListOutput"
+  /api/v1/transactions/{transactionId}:
+    get:
+      tags:
+        - Transaksi
+      summary: Mendapatkan Transaksi Berdasarkan ID
+      parameters:
+        - name: transactionId
+          in: path
+          required: true
+          type: integer
+      responses:
+        200:
+          description: Sukses
+          schema:
+            $ref: "#/definitions/PostTransactionOutput"
+definitions:
+  UserInput:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+      profile:
+        $ref: "#/definitions/ProfileInput"
+  ProfileInput:
+    type: object
+    properties:
+      identifyType:
+        type: string
+      identifyNumber:
+        type: string
+      address:
+        type: string
+  AccountInput:
+    type: object
+    properties:
+      userId:
+        type: integer
+      bankName:
+        type: string
+      bankAccountNumber:
+        type: string
+      balance:
+        type: number
+  TransactionInput:
+    type: object
+    properties:
+      sourceAccountId:
+        type: integer
+      destinasiAccountId:
+        type: integer
+      amount:
+        type: number
+  PostUserOutput:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      name:
+        type: string
+        example: "muhammad al imran"
+      email:
+        type: string
+        example: "muhammadalimran22@gmail.com"
+      password:
+        type: string
+        example: "123456789"
+      profile:
+        $ref: "#/definitions/PostProfileOutput"
+  PostAccountOutput:
+    type: object
+    properties:
+      userId:
+        type: integer
+        example: 1
+      bankName:
+        type: string
+        example: "BCA"
+      bankAccountNumber:
+        type: string
+        example: "123456789"
+      balance:
+        type: number
+        example: 10000
+  PostTransactionOutput:
+    type: object
+    properties:
+      sourceAccountId:
+        type: integer
+        example: 1
+      destinasiAccountId:
+        type: integer
+        example: 3
+      amount:
+        type: number
+        example: 5000
+  PostProfileOutput:
+    type: object
+    properties:
+      identifyType:
+        type: string
+        example: "KTP"
+      identifyNumber:
+        type: string
+        example: "123456789"
+      address:
+        type: string
+        example: "ACEH"
+  PutUserOutput:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 2
+      name:
+        type: string
+        example: "muhammad alex 2"
+      email:
+        type: string
+        example: "muhammadalimran22@gmail.com"
+      password:
+        type: string
+        example: "123456789"
+      profile:
+        $ref: "#/definitions/PostProfileOutput"
+  GetUserListOutput:
+    type: object
+    properties:
+      status:
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "success"
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/PostUserOutput"
+  GetAccountListOutput:
+    type: object
+    properties:
+      status:
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "success"
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/PostAccountOutput"
+  GetTransactionListOutput:
+    type: object
+    properties:
+      status:
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "success"
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/PostTransactionOutput"
+  DeleteUserOutput:
+    type: object
+    properties:
+      status:
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "success"
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/PostUserOutput"
+  DeletePostAccountOutput:
+    type: object
+    properties:
+      status:
+        type: boolean
+        example: true
+      message:
+        type: string
+        example: "success"
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/PostAccountOutput"
+  PutAccountOutput:
+    type: object
+    properties:
+      userId:
+        type: integer
+        example: 2
+      bankName:
+        type: string
+        example: "BNI"
+      bankAccountNumber:
+        type: string
+        example: "123456789"
+      balance:
+        type: number
+        example: 23000
+  Pagination:
+    title: Pagination
+    type: object
+    properties:
+      links:
+        type: object
+        properties:
+          next:
+            type: string
+            example: "https://domain.com/users?page=3&limit=10"
+          prev:
+            type: string
+            example: "https://domain.com/users?page=1&limit=10"
+      total_items:
+        type: integer
+        example: 100
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/PostUserOutput"

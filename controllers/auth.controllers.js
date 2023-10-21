@@ -87,12 +87,21 @@ module.exports = {
     }
   },
 
-  whoami: (req, res, next) => {
-    return res.status(200).json({
-      status: true,
-      message: "OK",
-      err: null,
-      data: { user: req.user },
-    });
+  whoami : async (req, res, next) => {
+    try {
+      const { user } = req;
+      res.status(200).json({ status: true, message: 'User authenticated successfully', data: user });
+    } catch (error) {
+      next(error);
+    }
   },
+  
+  whoamiAPI : async (req, res, next) => {
+    try {
+      const { user } = req;
+      res.status(200).json({ status: true, message: 'User authenticated successfully', data: user });
+    } catch (error) {
+      next(error);
+    }
+  }
 };

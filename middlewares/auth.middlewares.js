@@ -14,8 +14,22 @@ module.exports = {
         data: null,
       });
     }
+    // jwt.verify(authorization, JWT_SECRET_KEY, async (err, decoded) => {
+    //   if (err) {
+    //     return res.status(401).json({
+    //       status: false,
+    //       message: "Unauthorized",
+    //       err: err.message,
+    //       data: null,
+    //     });
+    //   }
 
-    jwt.verify(authorization, JWT_SECRET_KEY, async (err, decoded) => {
+    //   req.user = await prisma.user.findUnique({ where: { id: decoded.id } });
+    //   next();
+    // });
+    
+    const token = authorization.split(' ')[1];
+    jwt.verify(token, JWT_SECRET_KEY, async (err, decoded) => {
       if (err) {
         return res.status(401).json({
           status: false,
